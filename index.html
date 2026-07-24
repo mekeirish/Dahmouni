@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dahmouni Décès</title>
+  
+  <!-- Chargement de la police Cairo pour un rendu arabe parfait -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Library html2canvas pour l'export PNG -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+    }
+
+    /* Cadre ovale vertical agrandi pour mieux exploiter l'espace */
+    .oval-frame {
+      width: 110px;
+      height: 150px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #d4af37;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Ruban doré incliné en haut à gauche */
+    .gold-ribbon {
+      position: absolute;
+      top: 15px;
+      right: -28px;
+      transform: rotate(45deg);
+      background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+      width: 110px;
+      height: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+      z-index: 20;
+    }
+
+    /* Correction ligatures arabes */
+    .arabic-text {
+      font-family: 'Cairo', sans-serif !important;
+      letter-spacing: 0px !important;
+      word-spacing: normal !important;
+      direction: rtl !important;
+      text-align: center;
+    }
+  </style>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4b6cb7">
+<link rel="apple-touch-icon" href="icon.png"></head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col items-center justify-start p-4 space-y-6" dir="ltr">
+
+  <!-- TITRE -->
+  <h1 class="text-base font-semibold text-zinc-400">Dahmouni Décès</h1>
+
+  <!-- CONTAINER DE PRÉSENTATION -->
+  <div class="w-full max-w-[320px] p-1 bg-zinc-900 rounded-3xl border border-zinc-800">
+    
+    <!-- 1. LE CARREAU CARRÉ EXPORTABLE -->
+    <div id="memorialCard" class="relative w-full aspect-square rounded-2xl p-4 flex flex-col justify-between items-center overflow-hidden" style="background: radial-gradient(circle at center, #111111 0%, #000000 80%); border: 1px solid rgba(212, 175, 55, 0.35); outline: none !important;">
+      
+      <!-- RUBAN DORÉ -->
+      <div class="gold-ribbon pointer-events-none"></div>
+
+      <!-- HAUT DU CARREAU : Verset centré + Séparateur ornemental -->
+      <div class="w-full flex flex-col items-center pt-0">
+        <img crossorigin="anonymous" src="https://i.ibb.co/GfY90WQh/Screenshot-2026-07-24-20-00-42-686-com-pinterest-edit.jpg" alt="Verset" class="h-[44px] w-auto object-contain block rounded">
+        <div class="w-20 h-[1px] bg-gradient-to-r from-transparent via-amber-500/40 to-transparent mt-1.5"></div>
+      </div>
+
+      <!-- CONTENU CENTRAL : Ovale à gauche / Éléments textuels à droite -->
+      <div class="w-full flex flex-row items-center justify-between px-1 my-auto">
+        
+        <!-- ÉLÉMENTS TEXTUELS À DROITE (Genre, Nom, Dates) -->
+        <div class="flex-1 flex flex-col items-center justify-center px-2">
+          
+          <!-- Titre Arabe (الفقيد / الفقيدة) -->
+          <div id="genderTitle" class="arabic-text text-amber-400 font-bold text-base">
+            الفقيد
+          </div>
+
+          <!-- Nom Centré (sans coupure) -->
+          <div class="w-full mt-1.5">
+            <h2 id="nameDisplay" dir="rtl" class="arabic-text text-sm font-bold text-zinc-100 leading-tight break-words">
+              Nom & Prénom
+            </h2>
+          </div>
+
+          <!-- Dates (Naissance - Année en cours, vide si non spécifié) -->
+          <div id="datesDisplay" class="arabic-text text-xs text-zinc-400 mt-1.5 tracking-wider">
+            <!-- Vide par défaut -->
+          </div>
+
+        </div>
+
+        <!-- OVALE VERTICAL À GAUCHE -->
+        <div class="oval-frame relative flex items-center justify-center bg-zinc-900 shrink-0">
+          <img id="photoPreview" crossorigin="anonymous" src="" alt="Photo" class="w-full h-full object-cover hidden">
+          <div id="placeholderContainer" class="w-full h-full flex items-center justify-center bg-zinc-900 text-zinc-600">
+            <!-- Ombre générique par défaut (Homme) -->
+            <svg id="defaultSilhouette" class="w-20 h-20 text-zinc-700" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BAS DU CARREAU : Signature optimisée + Texte officiel -->
+      <div class="w-full flex flex-col items-center pt-2 pb-1 border-t border-amber-500/20">
+        <img crossorigin="anonymous" src="https://i.ibb.co/v61JwD3P/logo-perfect-quality-square-2.png" alt="Signature" class="h-[26px] w-auto object-contain block">
+        <div class="arabic-text text-amber-400 text-[11px] font-semibold mt-1">
+          الصفحة الرسمية لمدينة الدحموني
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- 2. LES OUTILS DE CONTRÔLE -->
+  <div class="w-full max-w-[320px] bg-zinc-900/80 border border-zinc-800 rounded-3xl p-5 space-y-4 shadow-xl">
+    
+    <!-- Bouton Galerie Photo -->
+    <div>
+      <label class="block text-xs text-zinc-400 mb-1 font-medium">Photo</label>
+      <label for="imageUploader" class="flex items-center justify-center gap-2 w-full py-3 px-4 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-xl cursor-pointer text-sm font-medium text-zinc-200 active:scale-[0.98] transition">
+        <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+        Ouvrir la galerie
+      </label>
+      <input type="file" id="imageUploader" accept="image/*" class="hidden">
+    </div>
+
+    <!-- Saisie du nom -->
+    <div>
+      <label for="nameInput" class="block text-xs text-zinc-400 mb-1 font-medium">Nom complet</label>
+      <input type="text" id="nameInput" dir="auto" placeholder="Saisir le nom..." class="w-full py-3 px-4 bg-zinc-900 border border-zinc-700 rounded-xl text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-400 text-sm">
+    </div>
+
+    <!-- Sélection de l'année de naissance (optionnelle) -->
+    <div>
+      <label for="birthSelect" class="block text-xs text-zinc-400 mb-1 font-medium">Année de naissance (Optionnelle)</label>
+      <select id="birthSelect" class="w-full py-2.5 px-3 bg-zinc-900 border border-zinc-700 rounded-xl text-zinc-100 text-sm text-center focus:outline-none focus:border-zinc-400">
+        <!-- Rempli dynamiquement -->
+      </select>
+    </div>
+
+    <!-- Sélecteur Genre -->
+    <div>
+      <label class="block text-xs text-zinc-400 mb-1 font-medium">Genre</label>
+      <div class="grid grid-cols-2 gap-3">
+        <button type="button" id="btnHomme" onclick="setGender('Homme')" class="py-2.5 rounded-xl border text-sm font-medium transition bg-zinc-100 text-zinc-900 border-zinc-100 shadow">
+          Homme
+        </button>
+        <button type="button" id="btnFemme" onclick="setGender('Femme')" class="py-2.5 rounded-xl border text-sm font-medium transition bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700">
+          Femme
+        </button>
+      </div>
+    </div>
+
+    <!-- BOUTON EXPORT PNG -->
+    <div class="pt-2">
+      <button type="button" onclick="exportCard()" class="w-full py-3.5 px-4 bg-amber-600 hover:bg-amber-500 active:scale-[0.98] transition text-white font-semibold rounded-xl shadow-lg flex items-center justify-center gap-2 text-sm">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+        </svg>
+        Télécharger en Image (PNG)
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    const imageUploader = document.getElementById('imageUploader');
+    const photoPreview = document.getElementById('photoPreview');
+    const placeholderContainer = document.getElementById('placeholderContainer');
+    const defaultSilhouette = document.getElementById('defaultSilhouette');
+    const nameInput = document.getElementById('nameInput');
+    const nameDisplay = document.getElementById('nameDisplay');
+    const birthSelect = document.getElementById('birthSelect');
+    const datesDisplay = document.getElementById('datesDisplay');
+    const genderTitle = document.getElementById('genderTitle');
+    const btnHomme = document.getElementById('btnHomme');
+    const btnFemme = document.getElementById('btnFemme');
+
+    // Option par défaut vide pour l'année de naissance (désactivée/non choisie par défaut)
+    const defaultOpt = document.option || document.createElement('option');
+    defaultOpt.value = "";
+    defaultOpt.textContent = "Non spécifiée";
+    defaultOpt.selected = true;
+    birthSelect.appendChild(defaultOpt);
+
+    // Génération des années de naissance (de l'année en cours jusqu'à 1900)
+    const currentYear = new Date().getFullYear();
+    for (let y = currentYear; y >= 1900; y--) {
+      const opt = document.createElement('option');
+      opt.value = y;
+      opt.textContent = y;
+      birthSelect.appendChild(opt);
+    }
+
+    // 1. Lecture de la photo
+    imageUploader.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          photoPreview.src = event.target.result;
+          photoPreview.classList.remove('hidden');
+          defaultSilhouette.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // 2. Saisie dynamique du nom
+    nameInput.addEventListener('input', function(e) {
+      const value = e.target.value.trim();
+      nameDisplay.textContent = value !== '' ? value : 'Nom & Prénom';
+    });
+
+    // 3. Mise à jour dynamique des dates (si naissance choisie : Naissance - Année en cours, sinon vide)
+    function updateDates() {
+      const b = birthSelect.value;
+      if (b !== "") {
+        datesDisplay.textContent = `${b} - ${currentYear}`;
+      } else {
+        datesDisplay.textContent = '';
+      }
+    }
+    birthSelect.addEventListener('change', updateDates);
+    updateDates(); // Initialisation
+
+    // 4. Bascule Homme / Femme avec mise à jour de la silhouette grise par défaut
+    function setGender(gender) {
+      if (gender === 'Homme') {
+        genderTitle.textContent = 'الفقيد';
+        btnHomme.className = "py-2.5 rounded-xl border text-sm font-medium transition bg-zinc-100 text-zinc-900 border-zinc-100 shadow";
+        btnFemme.className = "py-2.5 rounded-xl border text-sm font-medium transition bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700";
+        // Silhouette homme
+        defaultSilhouette.innerHTML = '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>';
+      } else {
+        genderTitle.textContent = 'الفقيدة';
+        btnFemme.className = "py-2.5 rounded-xl border text-sm font-medium transition bg-zinc-100 text-zinc-900 border-zinc-100 shadow";
+        btnHomme.className = "py-2.5 rounded-xl border text-sm font-medium transition bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700";
+        // Silhouette femme
+        defaultSilhouette.innerHTML = '<path d="M12 2C9.79 2 8 3.79 8 6s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 12c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z"/>';
+      }
+    }
+
+    // 5. Export PNG Haute Définition
+    async function exportCard() {
+      const card = document.getElementById('memorialCard');
+      
+      await document.fonts.ready;
+
+      html2canvas(card, {
+        scale: 3,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#000000',
+        logging: false
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'dahmouni-deces.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(err => {
+        console.error('Erreur export :', err);
+        alert('Erreur lors de la génération de l\'image.');
+      });
+    }
+  </script>
+
+
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));}</script>
+</body>
+</html>
